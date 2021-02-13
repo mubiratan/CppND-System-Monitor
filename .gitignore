@@ -7,4 +7,3 @@ build/*
 .idea/
 cmake-build-debug/
 .gradle/
-strings_projeto
