@@ -6,6 +6,7 @@
 
 #include "process.h"
 #include "processor.h"
+#include "linux_parser.h"
 
 class System {
  public:
@@ -26,8 +27,8 @@ class System {
   long upTime_ = 0;
   int totalProcesses_ = 0;
   int runningProcesses_ = 0;
-  std::string kernel_ = "";
-  std::string operatingSystem_ = "";
+  std::string kernel_;
+  std::string operatingSystem_;
 };
 
 #endif
