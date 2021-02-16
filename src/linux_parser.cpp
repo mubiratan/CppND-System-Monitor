@@ -107,17 +107,63 @@ long LinuxParser::UpTime() {
 }
 
 // TODO: Read and return the number of jiffies for the system
-long LinuxParser::Jiffies() { return 0; }
+long LinuxParser::Jiffies() {
+  return LinuxParser::ActiveJiffies()
+         + LinuxParser::IdleJiffies();
+}
 
 // TODO: Read and return the number of active jiffies for a PID
 // REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::ActiveJiffies(int pid[[maybe_unused]]) { return 0; }
+long LinuxParser::ActiveJiffies(int pid[[maybe_unused]]) {
+  long totalTime;
+  std::string line, value;
+  std::vector <std::string> values;
+
+  std::ifstream stream("/proc/" + std::to_string(pid) + "/stat");
+  if (stream.is_open()) {
+    std::getline(stream, line);
+    std::istringstream linestream(line);
+
+    while (linestream >> value) {
+      values.push_back(value);
+    }
+  }
+
+  long utime = 0, stime = 0 , cutime = 0, cstime = 0;
+  if (std::all_of(values[13].begin(), values[13].end(), isdigit))
+    utime = stol(values[13]);
+
+  if (std::all_of(values[14].begin(), values[14].end(), isdigit))
+    stime = stol(values[14]);
+
+  if (std::all_of(values[15].begin(), values[15].end(), isdigit))
+    cutime = stol(values[15]);
+
+  if (std::all_of(values[16].begin(), values[16].end(), isdigit))
+    cstime = stol(values[16]);
+
+  totalTime = (utime + stime + cutime + cstime);
+  return totalTime / sysconf(_SC_CLK_TCK);
+}
 
 // TODO: Read and return the number of active jiffies for the system
-long LinuxParser::ActiveJiffies() { return 0; }
+long LinuxParser::ActiveJiffies() {
+  auto jiffies = CpuUtilization();
+
+  return stol(jiffies[CPUStates::kUser_]) +
+         stol(jiffies[CPUStates::kNice_]) +
+         stol(jiffies[CPUStates::kSystem_]) +
+         stol(jiffies[CPUStates::kIRQ_]) +
+         stol(jiffies[CPUStates::kSoftIRQ_]) +
+         stol(jiffies[CPUStates::kSteal_]);
+}
 
 // TODO: Read and return the number of idle jiffies for the system
-long LinuxParser::IdleJiffies() { return 0; }
+long LinuxParser::IdleJiffies() {
+  auto jiffies = CpuUtilization();
+
+  return stol(jiffies[CPUStates::kIdle_]) + stol(jiffies[CPUStates::kIOwait_]);
+}
 
 // TODO: Read and return CPU utilization
 vector<string> LinuxParser::CpuUtilization() {
@@ -266,7 +312,7 @@ string LinuxParser::User(int pid) {
 long LinuxParser::UpTime(int pid) {
   string line, value;
   vector<string> values;
-  long starttime = 0;
+  long start_time = 0;
 
   std::ifstream stream(kProcDirectory + std::to_string(pid) + kStatFilename);
 
@@ -278,9 +324,9 @@ long LinuxParser::UpTime(int pid) {
     }
   }
   try {
-    starttime = stol(values[21]) / sysconf(_SC_CLK_TCK);
+    start_time = stol(values[21]) / sysconf(_SC_CLK_TCK);
   } catch (...) {
-    starttime = 0;
+    start_time = 0;
   }
-  return starttime;
+  return start_time;
 }
