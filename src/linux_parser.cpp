@@ -68,8 +68,7 @@ vector<int> LinuxParser::Pids() {
   return pids;
 }
 
-template <typename T>
-T findValueByKey(std::string const &keyFilter, std::string const &filename) {
+template <typename T> T findValueByKey(std::string const &keyFilter, std::string const &filename) {
   std::string line, key;
   T value;
 
@@ -89,8 +88,7 @@ T findValueByKey(std::string const &keyFilter, std::string const &filename) {
   return value;
 };
 
-template <typename T>
-T getValueOfFile(std::string const &filename) {
+template <typename T> T getValueOfFile(T filename) {
   std::string line;
   T value;
 
