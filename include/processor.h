@@ -3,7 +3,7 @@
 
 class Processor {
  public:
-  float Utilization();
+  double Utilization();
   void UpdateValues(long, long);
 
  private:

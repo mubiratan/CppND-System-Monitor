@@ -1,9 +1,8 @@
 #include "processor.h"
 #include "linux_parser.h"
-#include <iostream>
 
 // TODO: Return the aggregate CPU utilization
-float Processor::Utilization() {
+double Processor::Utilization() {
   long total, total_old, idle, idle_old;
 
   total = LinuxParser::Jiffies();
@@ -15,8 +14,8 @@ float Processor::Utilization() {
 
   UpdateValues(total, idle);
 
-  float total_delta = float(total) - float(total_old);
-  float idle_delta = float(idle) - float(idle_old);
+  double total_delta = static_cast<double>(total) - static_cast<double>(total_old);
+  double idle_delta = static_cast<double>(idle) - static_cast<double>(idle_old);
 
   return (total_delta - idle_delta) / total_delta;
 }
