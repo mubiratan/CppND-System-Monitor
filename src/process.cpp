@@ -16,7 +16,7 @@ Process::Process(int pid) {
   long seconds = LinuxParser::UpTime() - upTime_;
   long totaltime = LinuxParser::ActiveJiffies(pid);
   try {
-    cpuUtilization_ = float(totaltime) / float(seconds);
+    cpuUtilization_ = double(totaltime) / double(seconds);
 
   } catch (...) {
     cpuUtilization_ = 0;
@@ -29,7 +29,7 @@ int Process::Pid() {
 }
 
 // TODO: Return this process's CPU utilization
-float Process::CpuUtilization() {
+double Process::CpuUtilization() {
   return cpuUtilization_;
 }
 

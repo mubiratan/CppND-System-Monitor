@@ -103,12 +103,12 @@ template <typename T> T getValueOfFile(T filename) {
   return value;
 };
 
-float LinuxParser::MemoryUtilization() {
+double LinuxParser::MemoryUtilization() {
   string memTotal = filterMemTotalString;
   string memFree = filterMemFreeString;
 
-  float Total = findValueByKey<float>(memTotal, kMeminfoFilename);
-  float Free = findValueByKey<float>(memFree, kMeminfoFilename);
+  double Total = findValueByKey<double>(memTotal, kMeminfoFilename);
+  double Free = findValueByKey<double>(memFree, kMeminfoFilename);
 
   return (Total - Free) / Total;
 }
