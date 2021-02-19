@@ -28,7 +28,7 @@ const std::string filterProcMem("VmData:");
 const std::string filterDefault("Default");
 
 // System
-float MemoryUtilization();
+double MemoryUtilization();
 long UpTime();
 std::vector<int> Pids();
 int TotalProcesses();

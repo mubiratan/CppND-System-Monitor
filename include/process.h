@@ -13,7 +13,7 @@ class Process {
   int Pid();                               // TODO: See src/process.cpp
   std::string User();                      // TODO: See src/process.cpp
   std::string Command();                   // TODO: See src/process.cpp
-  float CpuUtilization();                  // TODO: See src/process.cpp
+  double CpuUtilization();                  // TODO: See src/process.cpp
   std::string Ram();                       // TODO: See src/process.cpp
   long int UpTime();                       // TODO: See src/process.cpp
   bool operator<(Process const& a) const;  // TODO: See src/process.cpp
@@ -23,7 +23,7 @@ class Process {
   int pid_ = 0;
   std::string user_;
   std::string command_;
-  float cpuUtilization_ = 0.0;
+  double cpuUtilization_ = 0.0;
   std::string ram_;
   long int upTime_ = 0;
 };
