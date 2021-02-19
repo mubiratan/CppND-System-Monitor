@@ -1,5 +1,5 @@
 .PHONY: all
-all: format test build
+all: format build
 
 .PHONY: format
 format:
